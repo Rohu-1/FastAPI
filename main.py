@@ -6,7 +6,7 @@ from random import randrange
 
 
 
-
+print("start to the FastAPI Learning")
 app=FastAPI()
 
 
