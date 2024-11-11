@@ -18,6 +18,7 @@ class Post(BaseModel):
     rating:Optional[int] =None
     
 
+
 my_posts=[{"title":"title of post 1","content":"content of post 1","id":1},{
     "title":"title of post 2","content":"content of post 2","id":2
 }]
@@ -65,15 +66,26 @@ def get_post(id:int,response:Response):
     return {"post_detail":post}
 
 
-@app.delete("/posts/{id}")
-def delete_post():
+@app.delete("/posts/{id}",status_code=status.HTTP_204_NO_CONTENT)
+def delete_post(id :int):
     index=find_index_post(id)
     print(my_posts)
     if index is None:
-            return {"message": "Post not found"}, 404 
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"post with id {id} does not exist")
     my_posts.pop(index)
-    return {'message': 'Post was successfully deleted'}
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-
- 
+@app.put("/posts/{id}")
+def update_post(id:int,post:Post):
+    print(post)
+    index=find_index_post(id)
+  
+    if index == None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"post with id {id} does not exist")
+    post_dict=post.dict()
+    post_dict['id']=id
+    my_posts[index]=post_dict
+    return {"data":post_dict}
+   
+   
