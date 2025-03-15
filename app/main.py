@@ -9,7 +9,6 @@ import time
 
 
 
-print("start to the FastAPI Learning")
 app=FastAPI()
 
 
